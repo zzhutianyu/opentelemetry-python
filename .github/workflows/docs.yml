@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  push:
+    branches:
+    - gh-pages-action
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+    - name: Build docs
+      run: tox -e docs
+    - name: Publish to gh-pages
+      run: |
+        cp -R docs/build/html/* docs/
+        rm -rf docs/build/
+        git add -f docs/
+        git push -f gh-pages
